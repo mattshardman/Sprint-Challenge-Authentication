@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { withRouter } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import Joke from "./Joke";
+import Header from "./Header";
 
 const Container = styled.div`
     width: 100%:
@@ -15,29 +18,40 @@ const JokeWrapper = styled.div`
   padding: 10px;
 `;
 
-function Jokes() {
+function Jokes(props) {
   const [jokes, setJokes] = useState([]);
   const getJokes = async token => {
-    const results = await axios.get("http://localhost:3300/api/jokes", {
-      headers: { Authorization: token }
-    });
-    console.log(results)
-    setJokes(results.data);
+    try {
+      const results = await axios.get("http://localhost:3300/api/jokes", {
+        headers: { Authorization: token }
+      });
+      setJokes(results.data);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
     if (token) {
       getJokes(token);
+    } else {
+        props.history.push("/login");
     }
   }, []);
+  
   return (
-    <Container>
-      <JokeWrapper>
-          {jokes.map(({joke}) => <div>{joke}</div>)}
-          </JokeWrapper>
-    </Container>
+    <>
+      <Header />
+      <Container>
+        <JokeWrapper>
+          {jokes.map(({ joke }) => (
+            <Joke>{joke}</Joke>
+          ))}
+        </JokeWrapper>
+      </Container>
+    </>
   );
 }
 
-export default Jokes;
+export default withRouter(Jokes);
