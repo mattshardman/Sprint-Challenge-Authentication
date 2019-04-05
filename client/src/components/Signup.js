@@ -4,7 +4,7 @@ import { withRouter, Link } from "react-router-dom";
 
 import * as Styled from './FormStyles';
 
-function Login(props) {
+function SignUp(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -12,6 +12,14 @@ function Login(props) {
 
   const _submitHandler = async e => {
     e.preventDefault();
+    if (!username) {
+      return setError("Username cannot be blank");
+    }
+
+    if (!password || password !== confirmPassword) {
+        return setError("Passwords must match");
+    }
+
     try {
       const token = await axios.post("http://localhost:3300/api/register", {
         username,
@@ -20,9 +28,10 @@ function Login(props) {
       localStorage.setItem("auth_token", token.data);
       props.history.replace("/jokes");
     } catch (e) {
-      setError(true);
+      setError("Could not create new user");
     }
   };
+  
   return (
     <Styled.Container>
      
@@ -46,7 +55,7 @@ function Login(props) {
           value={confirmPassword}
           onChange={e => setConfirmPassword(e.target.value)}
         />
-        {!!error && <div>Could not create new user</div>}
+        {!!error && <Styled.ErrorMessage>{error}</Styled.ErrorMessage>}
         <Styled.Button type="submit">Sign Up</Styled.Button>
         <Styled.SignUp>
           Already have an account?&nbsp;<Link to="/login">Log In</Link>
@@ -56,4 +65,4 @@ function Login(props) {
   );
 }
 
-export default withRouter(Login);
+export default withRouter(SignUp);

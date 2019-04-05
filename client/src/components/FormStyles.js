@@ -22,6 +22,9 @@ export const Input = styled.input`
   height: 40px;
   padding: 0 15px;
   margin: 20px 0;
+  border-radius: 5px;
+  border: 1px deepskyblue solid;
+  outline: none;
 `;
 
 export const Button = styled.button`
@@ -29,8 +32,14 @@ export const Button = styled.button`
   width: 80%;
   height: 40px;
   font-size: 14px;
+  background: deepskyblue;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  font-weight: 700;
   cursor: pointer;
   margin: 20px 0;
+  outline: none;
 `;
 
 export const SignUp = styled.div`
@@ -42,3 +51,7 @@ export const SignUp = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const ErrorMessage = styled.div`
+  color: orange;
+`

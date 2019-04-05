@@ -38,7 +38,7 @@ function Login(props) {
           value={password}
           onChange={e => setPassword(e.target.value)}
         />
-        {!!error && <div>Error logging in</div>}
+        {!!error && <Styled.ErrorMessage>Error logging in</Styled.ErrorMessage>}
         <Styled.Button type="submit">Log In</Styled.Button>
         <Styled.SignUp>
           Don't have an account?&nbsp;<Link to="/signup">Sign Up</Link>
