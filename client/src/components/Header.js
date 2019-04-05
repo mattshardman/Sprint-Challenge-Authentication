@@ -3,10 +3,13 @@ import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 
 const Wrapper = styled.header`
+  position: fixed;
+  z-index: 100;
   width: 100%;
   height: 80px;
   display: flex;
   justify-content: center;
+  background: rgba(255,255,255,0.95);
 `;
 
 const Container = styled.div`
@@ -25,6 +28,8 @@ const LogOutButton = styled.button`
     color: deepskyblue;
     border-radius: 5px;
     cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
 `;
 
 function Header(props) {

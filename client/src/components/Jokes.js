@@ -16,6 +16,11 @@ const JokeWrapper = styled.div`
   width: 600px;
   max-width: 100%;
   padding: 10px;
+  padding-top: 100px;
+`;
+
+const Heading = styled.h1`
+  color: orange;
 `;
 
 function Jokes(props) {
@@ -48,7 +53,7 @@ function Jokes(props) {
           <Header />
           <Container>
             <JokeWrapper>
-              <h1>Today's Top Jokes</h1>
+              <Heading>Today's Top Jokes</Heading>
               {jokes.map(({ joke }) => (
                 <Joke>{joke}</Joke>
               ))}

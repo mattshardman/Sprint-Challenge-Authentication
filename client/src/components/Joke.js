@@ -13,10 +13,11 @@ const Card = styled.div`
   border-radius: 5px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.1);
 `;
 
 const Content = styled.div`
-  padding: 20px;
+  padding: 20px 20px 0 20px;
 `;
 
 const Reaction = styled.div`
