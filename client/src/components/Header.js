@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 
@@ -10,6 +10,7 @@ const Wrapper = styled.header`
   display: flex;
   justify-content: center;
   background: rgba(255,255,255,0.95);
+  box-shadow: ${({scrolled}) => scrolled && '0 3px 15px rgba(0,0,0,0.1)'};
 `;
 
 const Container = styled.div`
@@ -33,13 +34,26 @@ const LogOutButton = styled.button`
 `;
 
 function Header(props) {
+  const [scrolled, setScrolled] = useState(false);
   const _clickHandler = () => {
     localStorage.removeItem("auth_token");
     props.history.push("/login");
   };
 
+  useEffect(() => {
+    document.addEventListener('scroll', () => {
+      if(!window.scrollY) {
+        setScrolled(false);
+      } else {
+        setScrolled(true);
+      }
+    });
+  });
+
+  console.log(scrolled)
+
   return (
-    <Wrapper>
+    <Wrapper scrolled={scrolled}>
       <Container>
         <img
           src="https://image.flaticon.com/icons/svg/688/688269.svg"
