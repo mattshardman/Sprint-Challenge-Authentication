@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const { hashSync } = require("bcryptjs");
+const { hashSync, compareSync } = require("bcryptjs");
 
 const Users = require("../database/helpers/userModel");
 const { authenticate, createToken } = require("../auth/authenticate");
@@ -16,6 +16,23 @@ const register = async (req, res) => {
         res.status(201).json(token);
     } catch (e) {
         res.status(401).json({ message: "Failed to add user" });
+    }
+};
+
+const login = async (req, res) => {
+    const { username, password } = req.body;
+    try {
+        const user = await Users.getByUserName(username);
+        const match = compareSync(password, user.password);
+        if (match) {
+            const token = createToken({ id: user.id, user: user.username });
+            res.status(200).json(token);
+        } else {
+            res.status(400).json({ message: "Could not authenticate user" });
+        }
+      
+    } catch (e) {
+        res.status(400).json({ message: "Could not authenticate user" });
     }
 };
 
