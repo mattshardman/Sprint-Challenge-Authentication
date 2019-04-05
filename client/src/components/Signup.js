@@ -49,22 +49,25 @@ const SignUp = styled.div`
 function Login(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState(false);
 
   const _submitHandler = async e => {
     e.preventDefault();
     try {
-      const token = await axios.post("http://localhost:3300/api/login", {
+      const token = await axios.post("http://localhost:3300/api/register", {
         username,
         password
       });
       localStorage.setItem("auth_token", token.data);
       props.history.replace("/jokes");
     } catch (e) {
-      console.log(e);
+      setError(true);
     }
   };
   return (
     <Container>
+     
       <LoginBox onSubmit={_submitHandler}>
       <img src="https://image.flaticon.com/icons/svg/688/688269.svg" alt="" height={100} />
         <Input
@@ -79,9 +82,16 @@ function Login(props) {
           value={password}
           onChange={e => setPassword(e.target.value)}
         />
-        <Button type="submit">Log In</Button>
+        <Input
+          type="password"
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={e => setConfirmPassword(e.target.value)}
+        />
+        <Button type="submit">Sign Up</Button>
+        {!!error && <div>Could not create new user</div>}
         <SignUp>
-          Don't have an account?&nbsp;<Link to="/signup">Sign Up</Link>
+          Already have an account?&nbsp;<Link to="/login">Log In</Link>
         </SignUp>
       </LoginBox>
     </Container>
