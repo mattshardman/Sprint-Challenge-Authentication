@@ -19,6 +19,7 @@ const JokeWrapper = styled.div`
 `;
 
 function Jokes(props) {
+  const [loggedIn, setLoggedIn] = useState(false);
   const [jokes, setJokes] = useState([]);
   const getJokes = async token => {
     try {
@@ -34,24 +35,30 @@ function Jokes(props) {
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
     if (token) {
+        setLoggedIn(true);
       getJokes(token);
     } else {
-        props.history.push("/login");
+      props.history.push("/login");
     }
   }, []);
+
+  if (loggedIn) {
+    return (
+        <>
+          <Header />
+          <Container>
+            <JokeWrapper>
+              {jokes.map(({ joke }) => (
+                <Joke>{joke}</Joke>
+              ))}
+            </JokeWrapper>
+          </Container>
+        </>
+      );
+  }
+
+  return null;
   
-  return (
-    <>
-      <Header />
-      <Container>
-        <JokeWrapper>
-          {jokes.map(({ joke }) => (
-            <Joke>{joke}</Joke>
-          ))}
-        </JokeWrapper>
-      </Container>
-    </>
-  );
 }
 
 export default withRouter(Jokes);

@@ -1,54 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { withRouter, Link } from "react-router-dom";
-import styled from "styled-components";
 
-const Container = styled.div`
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const LoginBox = styled.form`
-  width: 500px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Input = styled.input`
-  box-sizing: border-box;
-  width: 80%;
-  height: 40px;
-  padding: 0 15px;
-  margin: 20px 0;
-`;
-
-const Button = styled.button`
-  box-sizing: border-box;
-  width: 80%;
-  height: 40px;
-  font-size: 14px;
-  cursor: pointer;
-  margin: 20px 0;
-`;
-
-const SignUp = styled.div`
-  box-sizing: border-box;
-  width: 80%;
-  height: 40px;
-  font-size: 14px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+import * as Styled from './FormStyles';
 
 function Login(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
 
   const _submitHandler = async e => {
     e.preventDefault();
@@ -60,31 +19,32 @@ function Login(props) {
       localStorage.setItem("auth_token", token.data);
       props.history.replace("/jokes");
     } catch (e) {
-      console.log(e);
+      setError(true);
     }
   };
   return (
-    <Container>
-      <LoginBox onSubmit={_submitHandler}>
+    <Styled.Container>
+      <Styled.LoginBox onSubmit={_submitHandler}>
       <img src="https://image.flaticon.com/icons/svg/688/688269.svg" alt="" height={100} />
-        <Input
+        <Styled.Input
           type="text"
           placeholder="Username"
           value={username}
           onChange={e => setUsername(e.target.value)}
         />
-        <Input
+        <Styled.Input
           type="password"
           placeholder="Password"
           value={password}
           onChange={e => setPassword(e.target.value)}
         />
-        <Button type="submit">Log In</Button>
-        <SignUp>
+        {!!error && <div>Error logging in</div>}
+        <Styled.Button type="submit">Log In</Styled.Button>
+        <Styled.SignUp>
           Don't have an account?&nbsp;<Link to="/signup">Sign Up</Link>
-        </SignUp>
-      </LoginBox>
-    </Container>
+        </Styled.SignUp>
+      </Styled.LoginBox>
+    </Styled.Container>
   );
 }
 
