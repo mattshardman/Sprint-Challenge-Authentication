@@ -6,4 +6,9 @@ const add = async user => {
     return newUser;
 };
 
-module.exports = { add };
+const getByUserName = async username => {
+    const user = await db("users").where({ username }).first();
+    return user;
+};
+
+module.exports = { add, getByUserName };
