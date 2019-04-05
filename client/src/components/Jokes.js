@@ -48,6 +48,7 @@ function Jokes(props) {
           <Header />
           <Container>
             <JokeWrapper>
+              <h1>Today's Top Jokes</h1>
               {jokes.map(({ joke }) => (
                 <Joke>{joke}</Joke>
               ))}
