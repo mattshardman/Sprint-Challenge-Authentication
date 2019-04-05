@@ -11,6 +11,10 @@ function Login(props) {
 
   const _submitHandler = async e => {
     e.preventDefault();
+    if (!username || !password) {
+      return setError(true);
+    }
+
     try {
       const token = await axios.post("http://localhost:3300/api/login", {
         username,
