@@ -1,5 +1,6 @@
-import React from "react";
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import axios from "axios";
+import { withRouter, Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -40,23 +41,51 @@ const SignUp = styled.div`
   box-sizing: border-box;
   width: 80%;
   height: 40px;
-  font-size: 14px; 
+  font-size: 14px;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-function Login() {
+function Login(props) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const _submitHandler = async e => {
+    e.preventDefault();
+    try {
+      const token = await axios.post("http://localhost:3300/api/login", {
+        username,
+        password
+      });
+      localStorage.setItem("auth_token", token.data);
+      props.history.replace("/jokes");
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <Container>
-      <LoginBox>
-        <Input type="text" placeholder="Username" />
-        <Input type="text" placeholder="Password" />
+      <LoginBox onSubmit={_submitHandler}>
+        <Input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={e => setUsername(e.target.value)}
+        />
+        <Input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+        />
         <Button type="submit">Log In</Button>
-        <SignUp>Don't have an account?&nbsp;<Link to="/signup">Sign Up</Link></SignUp>
+        <SignUp>
+          Don't have an account?&nbsp;<Link to="/signup">Sign Up</Link>
+        </SignUp>
       </LoginBox>
     </Container>
   );
 }
 
-export default Login;
+export default withRouter(Login);
